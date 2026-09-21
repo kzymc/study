@@ -78,7 +78,7 @@ if __name__ == '__main__':
     ge=_generator(list1)
     for item in ge:
         pass
-    # read_file(filename1)测试报错
+    read_file(filename1)
     print(paixu(filename))
     print(merge_dict(["a","b","c"],[1,2,3]))
     print(merge_dict(["a","b","c",'d'],[1,2,3]))
