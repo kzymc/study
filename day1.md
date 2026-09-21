@@ -37,6 +37,7 @@ git branch -m main修改分支名
 git merge <分支b> 合并分支
 git remote add origin git@github.com:kzymc/study.git 关联新的仓库
 git remote -v 确认仓库地址
+git push -u origin main 推送
 ```
 
 
