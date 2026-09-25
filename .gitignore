@@ -9,3 +9,8 @@ wheels/
 # Virtual environments
 .venv
 .env
+#数据原始语料
+aipyda/*.md
+data/docs/*.md
+data/chroma/
+*.pdf

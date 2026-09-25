@@ -1,8 +1,11 @@
 from pypdf import PdfReader
 import re
 from dataclasses import dataclass
-file_path_pdf="d:/DSH/DSHprint/乌合之众：大众心理研究（畅销125年纪念版）.pdf"
-file_path_md="D:/DSH/DSHprint/practice/aipyda/乌合之众_第一卷起.md"
+import os
+from dotenv import load_dotenv
+load_dotenv()
+file_path_pdf=os.getenv("FILE_PATH_PDF")
+file_path_md=os.getenv("FILE_PATH_MD")
 def read_pdf(file_path,page=1):
     txt =""
     i=0
@@ -41,11 +44,11 @@ def chunk_text2(text,file_path,max_level =2):
         if current_heading or current_content:
             nonlocal num
             current=">".join(current_heading)+"\n"+"\n".join(current_content).strip()
-            chunks.append(Metadata(source_path=file_path,title=current_heading,chnk_num=num,text=current))
+            chunks.append(Metadata(source_path=file_path,title=current_heading[-1],chnk_num=num,text=current))
             num+=1
             
     for line in lines:
-        m=re.match(rf"^(#{{1,{max_level}}})\s+(.*)$",line,max_level)#rf"^(#{{1,{max_level}}})\s+(.*)$"
+        m=re.match(rf"^(#{{1,{max_level}}})\s+(.*)$",line)#rf"^(#{{1,{max_level}}})\s+(.*)$"
         if m:
             flush()
             level=len(m.group(1))
@@ -69,7 +72,7 @@ def chun_text3(text,file_path,lentext=1,):
 
 if __name__ == '__main__':
     print(read_pdf(file_path_pdf,2))
-    # print(chunk_text1(read_md(file_path_md),file_path_md)[0])
-    # print(chunk_text2(read_md(file_path_md),file_path_md)[0])
-    # print(chun_text3(read_md(file_path_md),file_path_md)[0])
+    print(chunk_text1(read_md(file_path_md),file_path_md)[0])
+    print(chunk_text2(read_md(file_path_md),file_path_md)[0])
+    print(chun_text3(read_md(file_path_md),file_path_md)[0])
     
