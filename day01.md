@@ -38,6 +38,8 @@ git merge <分支b> 合并分支
 git remote add origin git@github.com:kzymc/study.git 关联新的仓库
 git remote -v 确认仓库地址
 git push -u origin main 推送
+git rm --cached 文件名 删除仓库保留本地文件
+git ls-files 查看已追踪的文件
 ```
 
 
