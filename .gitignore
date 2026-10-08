@@ -14,3 +14,5 @@ aipyda/*.md
 data/docs/*.md
 data/chroma/
 *.pdf
+.chroma_db/
+.gitignore

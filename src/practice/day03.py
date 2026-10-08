@@ -82,8 +82,8 @@ def chunk_text3(text,file_path,lentext=1,chunk_size=1000):
     
 
 if __name__ == '__main__':
-    # print(read_pdf(file_path_pdf,2))
-    # print(chunk_text1(read_md(file_path_md),file_path_md)[0])
+    print(read_pdf(file_path_pdf,2))
+    print(chunk_text1(read_md(file_path_md),file_path_md)[0])
     print(chunk_text2(read_md(file_path_md),file_path_md)[5])
-    # print(chunk_text3(read_md(file_path_md),file_path_md)[0])
+    print(chunk_text3(read_md(file_path_md),file_path_md)[0])
     
