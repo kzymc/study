@@ -20,7 +20,7 @@ class Metadata:
     source_path:str
     chnk_num:int
     text:str
-    heading_path: list[str]|None=None
+    heading_path: str|None=None
     char_start:int|None=None
     char_end:int|None=None
     
@@ -38,7 +38,7 @@ def chunk_text1(text,file_path,chunk_size=1000,overlap=100,):
 def chunk_text2(text,file_path,max_level =2):
     chunks = []
     lines =text.splitlines()
-    current_heading = []
+    current_heading = ""
     current_content = []
     num=1
     def flush():
@@ -55,7 +55,7 @@ def chunk_text2(text,file_path,max_level =2):
             level=len(m.group(1))
             title=m.group(2).strip()
             current_heading = current_heading[:level -1]
-            current_heading.append(title)
+            current_heading += f">{title}"
             current_content = []
         else:
             current_content.append(line.strip())

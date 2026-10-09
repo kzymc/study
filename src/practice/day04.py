@@ -4,9 +4,15 @@ from openai import OpenAI
 from practice.day03 import chunk_text1,file_path_md,read_md,Metadata
 from typing import overload
 from dataclasses import asdict
+from dotenv import load_dotenv
+from chromadb.api.types import Embeddings
+from typing import cast
+load_dotenv()
+import os
+
 client = OpenAI(
-    base_url="http://localhost:8000/v1",
-    api_key="sk-",#本地服务
+    base_url=os.getenv("BGE_BASE_URL"),
+    api_key=os.getenv("BGE_API_KEY"),
 )
 
 @overload
@@ -17,8 +23,10 @@ def get_embedding(query:list[str])->list[list[float]]:
     pass
 
 def get_embedding(query:str|list[str]):
+    
+    model=os.getenv("BGE_MODEL","bge-m3")
     resp =client.embeddings.create(
-        model="bge-m3",
+        model=model,
         input=query,
     )
     vecs=[item.embedding for item in resp.data]
@@ -30,19 +38,35 @@ _chroma =chromadb.PersistentClient(path="./chroma_db",
 collection = _chroma.get_or_create_collection(name="my_kb",
                                        metadata={"hnsw:space": "cosine"})
 
-def addDocument(chunks:list[Metadata]):
+def addDocument(chunks:list[Metadata],batch_size:int=20):
+    documents=[]
+    ids=[]
+    metadatas=[]
+    embeddings=[]
+    def flush():
+        nonlocal documents,ids,metadatas,embeddings
+        if documents:
+            embeddings = get_embedding(documents)
+            collection.upsert(
+                documents=documents,
+                embeddings=cast(Embeddings,embeddings),
+                ids=ids,
+                metadatas=metadatas,
+            )
+            print(f"已添加{len(documents)}条文档现在总共有{collection.count()}条文档")
+            documents=[]
+            ids=[]
+            metadatas=[]
+            embeddings=[]        
     for chunk in chunks:
-        document=chunk.text
-        ids=f"my_kb{chunk.chnk_num}"
-        metadatas =asdict(chunk)
-        embeddings = get_embedding(document)
-        collection.upsert(
-            documents=document,
-            embeddings=embeddings,
-            ids=ids,
-            metadatas=metadatas,
-        )
-        print(f"写入{ids}条,当前总数{collection.count()}")
+        documents.append(chunk.text)
+        ids.append(f"{chunk.source_path}_{chunk.chnk_num}")
+        metadatas.append({k: v for k, v in asdict(chunk).items() if k != "text"})
+        if len(documents) >= batch_size:
+            flush()
+    flush()
+    
+
 
 def search(query: str, k: int = 3):
     # 1. 查询文本转向量
