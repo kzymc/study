@@ -1,5 +1,8 @@
 from pypdf import PdfReader
-with PdfReader('d:\DSH\DSHprint\乌合之众：大众心理研究（畅销125年纪念版）.pdf')as pdf:
+import os
+from dotenv import load_dotenv
+load_dotenv()
+with PdfReader(os.environ["FILE_PATH_PDF"]) as pdf:
     print("------------------迭代对象输出内容------------------")
     page=pdf.pages[1]
     print(page.extract_text())

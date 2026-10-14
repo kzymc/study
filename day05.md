@@ -37,3 +37,45 @@
 6.故意填错api_key通过from None切断让他只显示我的报错信息。然后改回正确的api。
 
 7.今天就到这里吧2026年10月9日22:20:56。
+
+## 附录A:@retry的参数
+
+| 参数名                 | 类型       | 默认值                        | 作用                                                         |
+| ---------------------- | ---------- | ----------------------------- | ------------------------------------------------------------ |
+| `sleep`                | Callable   | `tenacity.nap.sleep`          | 自定义睡眠函数，一般无需修改                                 |
+| **stop**               | StopBaseT  | **stop_never**                | **停止重试的条件**（如最大次数、总时长），默认永不停止       |
+| **wait**               | WaitBaseT  | **wait_none**                 | **每次重试前的等待策略**（如固定间隔、指数退避），默认不等待 |
+| **retry**              | RetryBaseT | **retry_if_exception_type()** | **判断哪些异常触发重试**，默认对任何 `Exception` 都重试      |
+| `before`               | Callable   | `before_nothing`              | 每次重试尝试**前**执行的回调                                 |
+| `after`                | Callable   | `after_nothing`               | 每次重试尝试**后**执行的回调                                 |
+| **before_sleep**       | Callable   | **None**                      | **等待前**执行的回调（常用于记录日志）                       |
+| **reraise**            | bool       | **False**                     | 重试耗尽后，是否**抛出原始异常**。`False` 则抛出 `RetryError` |
+| `retry_error_cls`      | Type       | `tenacity.RetryError`         | `reraise=False` 时抛出的异常类型                             |
+| `retry_error_callback` | Callable   | `None`                        | 重试耗尽后的回调，可**自定义返回值**而非抛出异常             |
+
+## 附录B:常见错误代码
+
+| 类型             | 例子                         | 重试有用吗   | 该重试   |
+| ---------------- | ---------------------------- | ------------ | -------- |
+| **网络问题**     | `ConnectionError`、`Timeout` | ✅ 可能恢复   | **要**   |
+| **限流**         | 429 Too Many Requests        | ✅ 等一会再试 | **要**   |
+| **服务端错误**   | 500、502、503、504           | ✅ 可能恢复   | **要**   |
+| **请求错误**     | 400 Bad Request              | ❌ 重试还是错 | **不要** |
+| **认证失败**     | **401 Unauthorized**         | ❌ 重试还是错 | **不要** |
+| **权限不足**     | 403 Forbidden                | ❌ 重试还是错 | **不要** |
+| **资源不存在**   | 404 Not Found                | ❌ 重试还是错 | **不要** |
+| **参数校验失败** | 422 Unprocessable            | ❌ 重试还是错 | **不要** |
+
+**OpenAI SDK 的异常类型**：
+
+| 异常                       | 对应 HTTP | 重试 |
+| -------------------------- | --------- | ---- |
+| `APIConnectionError`       | 连接问题  | ✅    |
+| `APITimeoutError`          | 超时      | ✅    |
+| `RateLimitError`           | **429**   | ✅    |
+| `InternalServerError`      | **5xx**   | ✅    |
+| `AuthenticationError`      | **401**   | ❌    |
+| `PermissionDeniedError`    | **403**   | ❌    |
+| `BadRequestError`          | **400**   | ❌    |
+| `NotFoundError`            | **404**   | ❌    |
+| `UnprocessableEntityError` | **422**   | ❌    |

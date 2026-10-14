@@ -1,20 +1,21 @@
-from openai import OpenAI
-from tenacity import retry, stop_after_attempt, wait_fixed,before_sleep_log
+from openai import OpenAI, APIConnectionError,APITimeoutError,RateLimitError,InternalServerError
+from tenacity import retry, stop_after_attempt, wait_fixed,before_sleep_log,retry_if_exception_type
 import logging
 
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
-base_url = os.getenv("OPENAI_BASE_URL")
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"), base_url=base_url)
+ExceptionType =(APITimeoutError,APIConnectionError,RateLimitError,InternalServerError)
+base_url = os.environ["OPENAI_BASE_URL"]
+api_key = os.environ["OPENAI_API_KEY"]
+client = OpenAI(api_key=api_key, base_url=base_url)
 system_prompt=""
 user_prompt="你好"
 log= logging.getLogger(__name__)
 class myException(Exception):
     pass
-@retry(stop =stop_after_attempt(3),wait=wait_fixed(2),before_sleep=before_sleep_log(log,logging.WARNING),reraise=True,)
+@retry(retry= retry_if_exception_type(ExceptionType),stop =stop_after_attempt(3),wait=wait_fixed(2),before_sleep=before_sleep_log(log,logging.WARNING),reraise=True,)
 def _get_response(system_prompt:str, user_prompt:str):
     response = client.chat.completions.create(
         model="deepseek-v4-flash",
@@ -22,11 +23,12 @@ def _get_response(system_prompt:str, user_prompt:str):
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
         ],
+        
         stream=False,
         reasoning_effort="high",
-        extra_body={"thinking": {"type": "disabled"}}
+        extra_body={"thinking": {"type": "enabled"}} 
     )
-    return response.choices[0].message.content
+    return response
 def get_response(system_prompt:str, user_prompt:str):
     try:
         response = _get_response(system_prompt, user_prompt)

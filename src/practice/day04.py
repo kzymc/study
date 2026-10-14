@@ -7,12 +7,13 @@ from dataclasses import asdict
 from dotenv import load_dotenv
 from chromadb.api.types import Embeddings
 from typing import cast
+import logging 
 load_dotenv()
 import os
 
 client = OpenAI(
-    base_url=os.getenv("BGE_BASE_URL"),
-    api_key=os.getenv("BGE_API_KEY"),
+    base_url=os.environ["BGE_BASE_URL"],
+    api_key=os.environ["BGE_API_KEY"],
 )
 
 @overload
@@ -68,7 +69,7 @@ def addDocument(chunks:list[Metadata],batch_size:int=20):
     
 
 
-def search(query: str, k: int = 3):
+def search(query: str, k: int = 3)->list[dict]:
     # 1. 查询文本转向量
     query_vec = get_embedding(query)
 
@@ -82,7 +83,8 @@ def search(query: str, k: int = 3):
     metadatas=results["metadatas"]
     distances=results["distances"]
     if not documents or not metadatas or not distances:
-        return print("未检索到相关文档")
+        logging.info("未检索到相关文档")
+        return []
     hits =[]
     for doc, meta, dist in zip(
         documents[0],

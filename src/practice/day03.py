@@ -4,8 +4,8 @@ from dataclasses import dataclass
 import os
 from dotenv import load_dotenv
 load_dotenv()
-file_path_pdf=os.getenv("FILE_PATH_PDF")
-file_path_md=os.getenv("FILE_PATH_MD")
+file_path_pdf=os.environ["FILE_PATH_PDF"]
+file_path_md=os.environ["FILE_PATH_MD"]
 def read_pdf(file_path,page=1):
     with PdfReader(file_path)as pdf:
         txt=pdf.pages[page].extract_text()
