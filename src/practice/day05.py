@@ -18,7 +18,7 @@ log= logging.getLogger(__name__)
 class myException(Exception):
     pass
 @retry(retry= retry_if_exception_type(ExceptionType),stop =stop_after_attempt(3),wait=wait_fixed(2),before_sleep=before_sleep_log(log,logging.WARNING),reraise=True,)
-def _get_response(system_prompt:str, user_prompt:str,stream:bool=False)->str|None:
+def _get_response(system_prompt:str, user_prompt:str)->str|None:
     response = client.chat.completions.create(
         model="deepseek-v4-flash",
         messages=[  
@@ -34,22 +34,25 @@ def _get_response(system_prompt:str, user_prompt:str,stream:bool=False)->str|Non
     return response.choices[0].message.content
 
 def _get_stream_response(system_prompt:str, user_prompt:str)->Iterable[str]:
-    response = client.chat.completions.create(
-        model="deepseek-v4-flash",
-        messages=[  
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt}
-        ],
-        
-        stream=True,
-        reasoning_effort="medium",
-        extra_body={"thinking": {"type": "enabled"}} ,
-        
-    )
-    for chunk in response:
-        if chunk.choices[0].delta.content:
-            yield(chunk.choices[0].delta.content) 
-def get_response(system_prompt:str, user_prompt:str,stream:bool=False)->str|None:
+    try:
+        response = client.chat.completions.create(
+            model="deepseek-v4-flash",
+            messages=[  
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            
+            stream=True,
+            reasoning_effort="medium",
+            extra_body={"thinking": {"type": "enabled"}} ,
+            
+        )
+        for chunk in response:
+            if chunk.choices[0].delta.content:
+                yield(chunk.choices[0].delta.content)
+    except Exception as e:
+        raise myException(f"获取流式响应失败：{e}")from None
+def get_response(system_prompt:str, user_prompt:str)->str|None:
     try:
         response = _get_response(system_prompt, user_prompt)
         return response

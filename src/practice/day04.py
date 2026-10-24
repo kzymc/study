@@ -15,6 +15,8 @@ client = OpenAI(
     base_url=os.environ["BGE_BASE_URL"],
     api_key=os.environ["BGE_API_KEY"],
 )
+class myException(Exception):
+    pass
 
 @overload
 def get_embedding(query:str)->list[float]:
@@ -26,10 +28,13 @@ def get_embedding(query:list[str])->list[list[float]]:
 def get_embedding(query:str|list[str]):
     
     model=os.getenv("BGE_MODEL","bge-m3")
-    resp =client.embeddings.create(
-        model=model,
-        input=query,
-    )
+    try:
+        resp =client.embeddings.create(
+            model=model,
+            input=query,
+        )
+    except Exception as e:
+        raise myException(f"向量模型问题：{e}")from None
     vecs=[item.embedding for item in resp.data]
     
     return vecs[0] if isinstance(query,str) else vecs
@@ -99,6 +104,7 @@ def search(query: str, k: int = 3)->list[dict]:
         })
     return hits
 if __name__ == '__main__':
-    chunks=chunk_text1(read_md(file_path_md),file_path_md)
+    file_path_md1= os.path.basename(file_path_md)
+    chunks=chunk_text1(read_md(file_path_md),file_path_md1)
     addDocument(chunks)
     print(search("乌合之众讲了什么"))
