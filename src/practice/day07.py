@@ -90,7 +90,7 @@ def iter_stream(question: str) -> Iterator[str]:
                     yield text
 
 
-def fetch_once(question: str) -> tuple[str, list[str]]:
+def fetch_once(question: str) -> tuple[str, list[Citation]]:
     """非流式：一次拿完整答案 + 引用。DAY 7 演示时这个更值钱，因为引用能显示出来。"""
     r = httpx.post(f"{BACKEND}/chat", json={"question": question, "num": top_k}, timeout=120)
     r.raise_for_status()
@@ -125,7 +125,7 @@ if prompt := st.chat_input("问点什么…"):
                 if citations:
                     with st.expander(f"📎 {len(citations)} 条来源"):
                         for i, c in enumerate(citations, 1):
-                            st.markdown(f"**{i}.** {c}")
+                            st.markdown(f"**{i}.** `{c.source_path}` 第 {c.chnk_num} 块 · {c.heading_path or '—'}")
                 st.session_state.messages.append(
                     {"role": "assistant", "content": answer, "citations": citations}
                 )

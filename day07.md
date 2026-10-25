@@ -57,14 +57,15 @@ flowchart LR
 	chunk_text3
 	end
 	B-->D
+	D-.依赖.-E
 	subgraph D["外部服务"]
 	embedding
 	end
-	D-->C
+	D-->addDocument-->C
 	subgraph C["数据库"]
-	addDocument
+	chorma_db
 	end
-	subgraph E["外部依赖"]
+	subgraph E["本地"]
 	本地bge-m3:8005
 	end
 	
@@ -74,20 +75,23 @@ flowchart LR
 4.然后画在线的架构图
 
 ```mermaid
-flowchart LR
-G["用户问题"]-->H{"判断服务器状态"}
-H--有问题-->J[返回422]
-H--没问题-->A-->B-->C-->D-->E-->F-->I["拿到结果"]-->A
+flowchart TD
+A-->G["用户问题"]-->H{"判断服务器状态"}--未通过-->K["前端报错，并给出修的方法"]
+H--通过-->B
+B-->L{"流式还是非流式"}--流式-->D--非流式-->get_response-->buding_result-->非流式输出
+L--非流式-->D--流式-->_get_stream_response-->buding_stream_result-->流式输出
 subgraph A[UI]
 end
 subgraph B[API层]
 /chat
 /chat/stream
 end
+C-.依赖于.->M["云端deepseek"]
 subgraph C[编排层]
 buding_result
 buding_stream_result
 end
+D-.依赖于.->F
 subgraph D[检索层]
 search
 end
