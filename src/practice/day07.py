@@ -5,8 +5,13 @@ from collections.abc import Iterator
 
 import httpx
 import streamlit as st
-from practice.day06A import Citation
+from pydantic import BaseModel, Field
 
+
+class Citation(BaseModel):
+    source_path:str = Field(description="引用的文件名")
+    chnk_num:int = Field(description="引用的chunk编号")
+    heading_path: str|None = Field(default=None,description="引用的标题路径")
 BACKEND = "http://127.0.0.1:8001" 
 
 st.set_page_config(page_title="知识库问答", page_icon="📚", layout="centered")
@@ -131,7 +136,7 @@ if prompt := st.chat_input("问点什么…"):
         except httpx.ConnectError:
             st.error(
                 f"连不上后端 `{BACKEND}`。按顺序检查两个服务：\n\n"
-                f"1. **embedding 服务**：`python server.py --port 8000`\n"
+                f"1. **embedding 服务**：`python server.py --port 8005`\n"
                 f"2. **后端服务**：`uvicorn practice.day06A:app --port 8001`\n\n"
                 f"（两个都起了还连不上，看后端终端有没有报错）"
             )

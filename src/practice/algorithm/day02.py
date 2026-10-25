@@ -1,5 +1,5 @@
 
-def merge(self, nums1, m, nums2, n):
+def merge(nums1, m, nums2, n):
     """
     :type nums1: List[int]
     :type m: int
@@ -18,6 +18,23 @@ def merge(self, nums1, m, nums2, n):
         return nums1
     for i in range(n):
         nums1[-(i+1)] = nums2[i]
-        return nums1.sort()
+    nums1.sort()
+    return nums1
+if __name__ == '__main__':
+    nums1 = [1,2,3,0,0,0]
+    m = 3
+    nums2 = [2,5,6]
+    n = 3
+    print(merge(nums1, m, nums2, n))
+    nums1=[0]
+    m=0
+    nums2=[1]
+    n=1
+    print(merge(nums1, m, nums2, n))
+    nums1=[1]
+    m=1
+    nums2=[0]
+    n=0
+    print(merge(nums1, m, nums2, n))
 
             

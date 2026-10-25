@@ -27,7 +27,7 @@ def buding_result(request:ChatRequest)->ChatResponse:
         for item in result:
             context += f"{item['text']}\n"
             metadata= item["metadata"]
-            citations.append(Citation(source_path=metadata["source_path"],chnk_num=metadata["chnk_num"]))
+            citations.append(Citation(source_path=metadata["source_path"],chnk_num=metadata["chnk_num"],heading_path=metadata["heading_path"]))
         answer = get_response(system_prompt=f"请你根据知识库回答问题，知识库的内容是关于乌合之众这本书的部分与用户问题相关的内容，若只是库给的不够你判断问题就说不知道，上下文：{context}",
                               user_prompt=request.question)
     else:
