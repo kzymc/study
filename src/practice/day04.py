@@ -1,5 +1,7 @@
 import chromadb
 from chromadb.config import Settings
+from chromadb.api.models.Collection import Collection
+
 from openai import OpenAI
 from practice.day03 import chunk_text1,file_path_md,read_md,Metadata
 from typing import overload
@@ -44,7 +46,7 @@ _chroma =chromadb.PersistentClient(path="./chroma_db",
 collection = _chroma.get_or_create_collection(name="my_kb",
                                        metadata={"hnsw:space": "cosine"})
 
-def addDocument(chunks:list[Metadata],batch_size:int=20):
+def addDocument(collection:Collection,chunks:list[Metadata],batch_size:int=20):
     documents=[]
     ids=[]
     metadatas=[]
@@ -74,7 +76,7 @@ def addDocument(chunks:list[Metadata],batch_size:int=20):
     
 
 
-def search(query: str, k: int = 3)->list[dict]:
+def search(collection:Collection,query: str, k: int = 3)->list[dict]:
     # 1. 查询文本转向量
     query_vec = get_embedding(query)
 
@@ -104,7 +106,7 @@ def search(query: str, k: int = 3)->list[dict]:
         })
     return hits
 if __name__ == '__main__':
-    file_path_md1= os.path.basename(file_path_md)
-    chunks=chunk_text1(read_md(file_path_md),file_path_md1)
-    addDocument(chunks)
-    print(search("乌合之众讲了什么"))
+    # file_path_md1= os.path.basename(file_path_md)
+    # chunks=chunk_text1(read_md(file_path_md),file_path_md1)
+    # addDocument(collection,chunks=chunks)
+    print(search(collection,"乌合之众讲了什么"))

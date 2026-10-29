@@ -2,6 +2,7 @@ from pypdf import PdfReader
 import re
 from dataclasses import dataclass
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
 file_path_pdf=os.environ["FILE_PATH_PDF"]
@@ -11,10 +12,16 @@ def read_pdf(file_path,page=1):
         txt=pdf.pages[page].extract_text()
 
     return txt
-def read_md(file_path):
-    with open(file_path,'r',encoding='utf-8') as f:
-        content=f.read()
-    return content
+# def read_md(file_path):
+#     with open(file_path,'r',encoding='utf-8') as f:
+#         content=f.read()
+#     return content
+def read_md(file_path:Path):
+
+    content=file_path.read_text(encoding='utf-8')
+    path_name=file_path.name
+    return content,path_name
+
 @dataclass
 class Metadata:
     source_path:str
@@ -25,7 +32,7 @@ class Metadata:
     char_end:int|None=None
     
 #已知文本大约9.4万个字，
-def chunk_text1(text,file_path,chunk_size=1000,overlap=100,):
+def chunk_text1(text,file_path,chunk_size:int=1000,overlap:int=100,):
     chunks = []
     setup = chunk_size-overlap
     num=1
@@ -41,15 +48,19 @@ def chunk_text2(text,file_path,max_level =2):
     current_heading = ""
     current_content = []
     num=1
+    start=0
     def flush():
         if current_heading or current_content:
-            nonlocal num
-            current=">".join(current_heading)+"\n"+"\n".join(current_content).strip()
-            chunks.append(Metadata(source_path=file_path,heading_path=current_heading,chnk_num=num,text=current))
+            nonlocal start
+            nonlocal num,pos
+            current="".join(current_heading)+"\n"+"\n".join(current_content).strip()
+            chunks.append(Metadata(source_path=file_path,heading_path=current_heading,chnk_num=num,text=current,char_start=start,char_end=pos))
+            start=pos
             num+=1
-            
+    pos =0        
     for line in lines:
         m=re.match(rf"^(#{{1,{max_level}}})\s+(.*)$",line)#rf"^(#{{1,{max_level}}})\s+(.*)$"
+        pos+=len(line)
         if m:
             flush()
             level=len(m.group(1))
@@ -66,12 +77,16 @@ def chunk_text3(text,file_path,lentext=1,chunk_size=1000):
     sentences=[sentence.strip() for sentence in sentences if sentence.strip()]
     chunks=[]
     chunk_text=""
+    pos =1
+    start=1
     def flush():
-        nonlocal chunk_text
+        nonlocal chunk_text,start,pos
         if chunk_text:
-            chunks.append(Metadata(source_path=file_path,chnk_num=lentext,text=chunk_text))
+            chunks.append(Metadata(source_path=file_path,chnk_num=lentext,text=chunk_text,char_start=start,char_end=pos))
+            start=pos
             chunk_text=""
     for sentence in sentences:
+        pos+=len(sentence)
         if len(chunk_text)+len(sentence)>chunk_size:
             flush()
             lentext+=1
@@ -82,8 +97,9 @@ def chunk_text3(text,file_path,lentext=1,chunk_size=1000):
     
 
 if __name__ == '__main__':
-    print(read_pdf(file_path_pdf,2))
-    print(chunk_text1(read_md(file_path_md),file_path_md)[0])
-    print(chunk_text2(read_md(file_path_md),file_path_md)[5])
-    print(chunk_text3(read_md(file_path_md),file_path_md)[0])
+    path=next(Path(file_path_md).rglob("*.md"))
+    content,path_name=read_md(path)
+    print(chunk_text1(text=content,file_path=path_name,chunk_size=300,overlap=30)[0])
+    print(chunk_text2(text=content,file_path=path_name)[1])
+    print(chunk_text3(text=content,file_path=path_name,chunk_size=300)[0])
     

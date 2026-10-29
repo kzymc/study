@@ -1,0 +1,45 @@
+{"id":"Q01","type":"exact","answerable":true,"question":"七天无理由退货的 7 天从什么时候开始算？签收当天算吗？","gold":[["01-退货退款政策.md","七天无理由退货适用范围"]],"keywords":["签收次日","0 点","自然日"]}
+{"id":"Q02","type":"exact","answerable":true,"question":"运费险理赔的钱多久到账？","gold":[["02-运费与运费险.md","运费险理赔规则"]],"keywords":["72 小时","商家确认收货"]}
+{"id":"Q03","type":"exact","answerable":true,"question":"价保期是多长时间？","gold":[["04-发票与价保.md","价保规则"]],"keywords":["15 天","支付成功"]}
+{"id":"Q04","type":"exact","answerable":true,"question":"超出保修期的商品维修要收多少检测费？","gold":[["03-换货与维修.md","超保修期维修"]],"keywords":["30 元"]}
+{"id":"Q05","type":"exact","answerable":true,"question":"会员积分的有效期是多久？","gold":[["05-会员与优惠券.md","积分规则"]],"keywords":["24 个月","清零"]}
+{"id":"Q06","type":"exact","answerable":true,"question":"金卡会员每个月有几张免运费券？","gold":[["05-会员与优惠券.md","会员等级"]],"keywords":["5 张"]}
+{"id":"Q07","type":"exact","answerable":true,"question":"电子普通发票什么时候开具、怎么送达？","gold":[["04-发票与价保.md","发票类型"]],"keywords":["24 小时","预留邮箱"]}
+{"id":"Q08","type":"exact","answerable":true,"question":"退货商品被商家拒收，运费险还赔吗？","gold":[["02-运费与运费险.md","运费险不赔付的情形"]],"keywords":["拒收","不赔"]}
+{"id":"Q09","type":"exact","answerable":true,"question":"部分退货的话，优惠券会退回吗？","gold":[["05-会员与优惠券.md","优惠券退回"]],"keywords":["不退回"]}
+{"id":"Q10","type":"exact","answerable":true,"question":"用银行卡支付订单，退款多久到账？","gold":[["01-退货退款政策.md","退款到账时效"]],"keywords":["3 至 7 个工作日"]}
+{"id":"Q11","type":"cross_doc","answerable":true,"question":"我买了运费险，做了七天无理由退货，退货运费谁出？运费险能赔多少？","gold":[["02-运费与运费险.md","退货运费由谁承担"],["02-运费与运费险.md","运费险理赔规则"]],"keywords":["消费者承担","8 至 18 元"]}
+{"id":"Q12","type":"cross_doc","answerable":true,"question":"签收后 10 天发现商品有质量问题，可以换货吗？往返运费谁承担？","gold":[["03-换货与维修.md","换货条件"],["03-换货与维修.md","换货运费"]],"keywords":["15 个自然日","商家承担"]}
+{"id":"Q13","type":"cross_doc","answerable":true,"question":"整单退货之后，我的积分和优惠券分别会怎样？","gold":[["05-会员与优惠券.md","优惠券退回"],["05-会员与优惠券.md","积分规则"]],"keywords":["原路退回","扣回"]}
+{"id":"Q14","type":"cross_doc","answerable":true,"question":"已经开过发票的商品要退货，发票怎么处理？","gold":[["04-发票与价保.md","发票与退货"]],"keywords":["退回或作废","红冲"]}
+{"id":"Q15","type":"cross_doc","answerable":true,"question":"订单用了满减优惠，现在只退其中一部分商品，需要补钱吗？","gold":[["01-退货退款政策.md","部分退货"]],"keywords":["满减门槛","补回差额"]}
+{"id":"Q16","type":"cross_doc","answerable":true,"question":"价保期内商品降价了，但我是用优惠券买的，能退差价吗？","gold":[["04-发票与价保.md","价保规则"]],"keywords":["优惠券","不支持"]}
+{"id":"Q17","type":"cross_doc","answerable":true,"question":"大家电在保修期内出现非人为故障，维修流程是什么？整体要多久？","gold":[["03-换货与维修.md","保修期与保修范围"],["03-换货与维修.md","维修流程"]],"keywords":["上门维修","7 至 15 个工作日"]}
+{"id":"Q18","type":"cross_doc","answerable":true,"question":"商品质量有问题造成的退货，用户先行垫付了运费，这笔钱怎么拿回来？","gold":[["02-运费与运费险.md","退货运费由谁承担"]],"keywords":["商家承担","退款时一并返还"]}
+{"id":"Q19","type":"cross_doc","answerable":true,"question":"钻石会员有哪些权益？享受免运费之后，还会影响运费险理赔吗？","gold":[["05-会员与优惠券.md","会员等级"],["02-运费与运费险.md","运费险理赔规则"]],"keywords":["积分 2 倍","优先发货"]}
+{"id":"Q20","type":"cross_doc","answerable":true,"question":"系统价保比价没通过，我怎么申请人工审核？要多久出结果？","gold":[["04-发票与价保.md","价保申请方式"]],"keywords":["降价截图","48 小时"]}
+{"id":"Q21","type":"confusable","answerable":true,"question":"签收后第 8 天，发现商品有质量问题，还能七天无理由退货吗？","gold":[["01-退货退款政策.md","七天无理由退货适用范围"]],"keywords":["7 个自然日","超过"]}
+{"id":"Q22","type":"confusable","answerable":true,"question":"已经拆封用过的化妆品，还能七天无理由退货吗？","gold":[["01-退货退款政策.md","不支持七天无理由的商品"]],"keywords":["已拆封","不支持"]}
+{"id":"Q23","type":"confusable","answerable":true,"question":"我不喜欢这个颜色、拍错型号了，想换货，往返运费谁出？","gold":[["03-换货与维修.md","换货运费"]],"keywords":["消费者承担","非质量问题"]}
+{"id":"Q24","type":"confusable","answerable":true,"question":"商家承诺包邮的商品，退货时运费谁承担？首次发的运费退吗？","gold":[["02-运费与运费险.md","退货运费由谁承担"]],"keywords":["首次发货运费不退"]}
+{"id":"Q25","type":"confusable","answerable":true,"question":"退货物流单号填错了，运费险会赔付吗？","gold":[["02-运费与运费险.md","运费险不赔付的情形"]],"keywords":["填写错误","不赔"]}
+{"id":"Q26","type":"confusable","answerable":true,"question":"服饰鞋包类商品有保修期吗？出了问题怎么办？","gold":[["03-换货与维修.md","保修期与保修范围"]],"keywords":["无保修","15 天内换货"]}
+{"id":"Q27","type":"confusable","answerable":true,"question":"已经过期的优惠券，退货之后会给我补发吗？","gold":[["05-会员与优惠券.md","优惠券退回"]],"keywords":["不予补发"]}
+{"id":"Q28","type":"confusable","answerable":true,"question":"发票抬头或者税号填错了，还能重开吗？有时间限制吗？","gold":[["04-发票与价保.md","开票时效与修改"]],"keywords":["30 天","作废原发票"]}
+{"id":"Q29","type":"confusable","answerable":true,"question":"同一笔订单退了好几次货，运费险能赔几次？","gold":[["02-运费与运费险.md","运费险理赔规则"]],"keywords":["只赔付一次"]}
+{"id":"Q30","type":"confusable","answerable":true,"question":"优惠券可以用来抵扣运费吗？","gold":[["05-会员与优惠券.md","优惠券使用规则"]],"keywords":["不可抵扣运费"]}
+{"id":"Q31","type":"multi_hop","answerable":true,"question":"我用花呗分期买的商品，做了七天无理由退货。退款多久到账？我会损失什么？","gold":[["01-退货退款政策.md","退款到账时效"],["02-运费与运费险.md","退货运费由谁承担"]],"keywords":["3 至 5 个工作日","运费由消费者承担"]}
+{"id":"Q32","type":"multi_hop","answerable":true,"question":"商品在运输途中我申请拦截成功了，会产生退货运费吗？","gold":[["02-运费与运费险.md","拒收与拦截"]],"keywords":["不产生退货运费"]}
+{"id":"Q33","type":"multi_hop","answerable":true,"question":"在新疆的商品，退货运费怎么算？","gold":[["02-运费与运费险.md","偏远地区与超重"]],"keywords":["不包邮","补收运费"]}
+{"id":"Q34","type":"multi_hop","answerable":true,"question":"商品有使用痕迹或缺配件，商家可以拒绝退货吗？","gold":[["01-退货退款政策.md","退货商品的状态要求"]],"keywords":["折损费","有权拒绝"]}
+{"id":"Q35","type":"multi_hop","answerable":true,"question":"会员等级什么时候更新？如果消费不够了会立刻降级吗？","gold":[["05-会员与优惠券.md","会员等级"]],"keywords":["每月 1 日","1 个月保护期"]}
+{"id":"Q36","type":"unanswerable","answerable":false,"question":"你们的快递一般几天能送到？","gold":[],"keywords":[]}
+{"id":"Q37","type":"unanswerable","answerable":false,"question":"我想修改一下收货地址，怎么改？","gold":[],"keywords":[]}
+{"id":"Q38","type":"unanswerable","answerable":false,"question":"积分可以用来抽奖吗？","gold":[],"keywords":[]}
+{"id":"Q39","type":"unanswerable","answerable":false,"question":"你们支持货到付款吗？","gold":[],"keywords":[]}
+{"id":"Q40","type":"unanswerable","answerable":false,"question":"我的账号被盗了，怎么找回？","gold":[],"keywords":[]}
+{"id":"Q41","type":"unanswerable","answerable":false,"question":"能不能给海外公司开具增值税专用发票？","gold":[],"keywords":[]}
+{"id":"Q42","type":"unanswerable","answerable":false,"question":"商品支持定制刻字吗？","gold":[],"keywords":[]}
+{"id":"Q43","type":"unanswerable","answerable":false,"question":"你们在临汾有线下门店吗？","gold":[],"keywords":[]}
+{"id":"Q44","type":"unanswerable","answerable":false,"question":"退货运费能指定用顺丰吗？","gold":[],"keywords":[]}
+{"id":"Q45","type":"unanswerable","answerable":false,"question":"双十一会有什么促销活动？","gold":[],"keywords":[]}

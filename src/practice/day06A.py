@@ -5,6 +5,7 @@ from practice.day05 import get_response,_get_stream_response
 from typing import Iterable
 from fastapi.sse import EventSourceResponse
 from practice.day03 import Metadata
+from practice.day04 import collection
 
 class Citation(BaseModel):
     source_path:str = Field(description="引用的文件名")
@@ -20,7 +21,7 @@ class ChatResponse(BaseModel):
     answer:str|None =Field(default=None,description="模型的回复")
 
 def buding_result(request:ChatRequest)->ChatResponse:
-    result = search(request.question,request.num)
+    result = search(collection,request.question,request.num)
     context = ""
     citations=[]
     if result:
@@ -34,7 +35,7 @@ def buding_result(request:ChatRequest)->ChatResponse:
         answer = "没有相关上下文"
     return ChatResponse(citations=citations,answer=answer)
 def buding_stream_result(request:ChatRequest)->Iterable[str]:
-    result = search(request.question,request.num)
+    result = search(collection,request.question,request.num)
     context = ""
     if result:
         for item in result:
