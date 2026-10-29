@@ -4,6 +4,7 @@ import chromadb
 from chromadb.config import Settings
 from practice.rag.vectorstore import addDocument,search
 from practice.rag.chunking import chunk_text1,chunk_text2,chunk_text3,read_md
+from practice import REPO_ROOT
 import os
 from dotenv import load_dotenv
 import json
@@ -12,7 +13,7 @@ import logging
 logging.basicConfig(level=logging.INFO,format="%(asctime)s - %(levelname)s - %(message)s",datefmt="%Y-%m-%d %H:%M:%S")
 from chromadb.api.models.Collection import Collection
 
-load_dotenv()
+load_dotenv(REPO_ROOT / ".env")
 md=os.environ["FILE_PATH_MD"]
 name =["my_kb","my_kb2","my_kb3"]
 json_path=os.environ["JSON_PATH"]
@@ -62,7 +63,8 @@ def pd_serch(collection:Collection,json_data:list[dict],pos:int =0,k:int=5,token
 
 
 if __name__ == '__main__':
-    _chroma =chromadb.PersistentClient(path="./chroma_db_test",
+    # 路径基于 REPO_ROOT，换个目录启动也写进同一个测试库
+    _chroma =chromadb.PersistentClient(path=str(REPO_ROOT / "chroma_db_test"),
                                    settings=Settings(anonymized_telemetry=False))
     collection = _chroma.get_or_create_collection(name=name[0],
                                         metadata={"hnsw:space": "cosine"})

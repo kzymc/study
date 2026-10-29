@@ -70,8 +70,8 @@ streamlit run src/practice/app/ui.py
 
 三步顺序不能反：**embedding(8005) → 后端(8001) → UI**。
 
-> ⚠️ 必须在 `practice/` 根目录启动。`vectorstore.py` 和 `compare_chunking.py` 用的是相对路径
-> （`./chroma_db` / `./chroma_db_test`），换个目录启动会静默新建一个空库。
+所有运行时路径（Chroma 库、`.env`）都基于 `practice.REPO_ROOT` 解析，**从任何目录启动都指向仓库根**，
+不会因为你 `cd` 到了别的地方就静默新建一个空库。
 
 ## 评测
 
@@ -87,13 +87,23 @@ python -m practice.eval.compare_chunking
 
 ## 已知限制（⚠️ 投递前应逐条修完或删除本节）
 
-| # | 问题 | 影响 |
-|---|---|---|
-| 1 | `chunk_text2` 的 `heading_path` 用 `">".join()` 拼字符串，会把标题逐字符连接 | 该策略切出的文本被污染，对比结果无效 → **计划删除该函数** |
-| 2 | `chunk_text1` 的 `char_start` 是 1 基，Python 索引是 0 基 | `text[char_start:char_end]` 整体偏 1 个字符 |
-| 3 | `app/api.py` 的 system prompt 仍写着"关于乌合之众这本书" | 与当前售后政策语料不符，影响回答质量 |
-| 4 | 本地 embedding 服务启动脚本 `server.py` 缺失 | 需重写（约 40 行，OpenAI 兼容 `/v1/embeddings` 契约） |
-| 5 | 依赖 CWD（见上文） | 换目录启动会得到空库 |
+### ✅ 2026-10-29 已修
+
+| 问题 | 修法 |
+|---|---|
+| `app/api.py` 的 system prompt 写着"关于乌合之众这本书"，与售后政策语料不符 | 抽成模块级 `SYSTEM_PROMPT`，一次性与流式接口共用；改成通用售后知识库指令，并加"库中没有就直说"的拒答规则 |
+| `vectorstore.py` / `compare_chunking.py` 用 `"./chroma_db"` 相对路径 | 统一走 `practice.REPO_ROOT`（基于 `__file__`）。已验证：从 `D:\`、`practice\src\` 启动都不会在本地新建库 |
+| `load_dotenv()` 依赖 CWD 向上查找 | 改为 `load_dotenv(REPO_ROOT / ".env")`，5 个模块统一 |
+
+### 🔧 待办
+
+| # | 问题 | 影响 | 处置 |
+|---|---|---|---|
+| 1 | `chunk_text2` 用 `current_heading[:level-1]` 对 **str** 做字符切片 | 得到 `">>七天无理由"` 这类**带前导 `>`、且父级标题丢失**的 `heading_path`，前缀还会混进正文 → 该策略的对比数字不可用 | 按 v2 计划**删除该函数**（分块对比交给 Dify，自研只留定长） |
+| 2 | `chunk_text3` 的 `char_start` / `char_end` 从 **1** 开始 | 按区间还原原文会偏 1 个字符 | 改成 0 基 |
+| 3 | 本地 embedding 服务启动脚本 `server.py` 缺失 | 链路断在第一步（`day04` 之后全部跑不起来） | 重写（约 40 行，OpenAI 兼容 `POST /v1/embeddings`） |
+
+> 顺带记录一个已确认的正确项：`chunk_text1` 的 `char_start` 是 **0 基**（`char_start=i`），这块没问题。
 
 ## 开发规范
 
