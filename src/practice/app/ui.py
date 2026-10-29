@@ -137,7 +137,7 @@ if prompt := st.chat_input("问点什么…"):
             st.error(
                 f"连不上后端 `{BACKEND}`。按顺序检查两个服务：\n\n"
                 f"1. **embedding 服务**：`python server.py --port 8005`\n"
-                f"2. **后端服务**：`uvicorn practice.day06A:app --port 8001`\n\n"
+                f"2. **后端服务**：`uvicorn practice.app.api:app --port 8001`\n\n"
                 f"（两个都起了还连不上，看后端终端有没有报错）"
             )
         except httpx.HTTPStatusError as e:

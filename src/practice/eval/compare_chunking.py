@@ -1,9 +1,9 @@
-#新建测试数据库
+﻿#新建测试数据库
 #调用方法将测试数据插入数据库
 import chromadb
 from chromadb.config import Settings
-from practice.day04 import addDocument,search
-from practice.day03 import chunk_text1,chunk_text2,chunk_text3,read_md
+from practice.rag.vectorstore import addDocument,search
+from practice.rag.chunking import chunk_text1,chunk_text2,chunk_text3,read_md
 import os
 from dotenv import load_dotenv
 import json

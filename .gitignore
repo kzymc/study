@@ -9,10 +9,14 @@ wheels/
 # Virtual environments
 .venv
 .env
-#数据原始语料
+
+# 数据原始语料
 aipyda/*.md
 data/docs/*.md
-data/chroma/
 *.pdf
+
+# 本地向量库（都是运行时产物，不入库）
 chroma_db/
+chroma_db_test/
+data/chroma/
 

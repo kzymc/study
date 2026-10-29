@@ -1,9 +1,9 @@
-import chromadb
+﻿import chromadb
 from chromadb.config import Settings
 from chromadb.api.models.Collection import Collection
 
 from openai import OpenAI
-from practice.day03 import chunk_text1,file_path_md,read_md,Metadata
+from practice.rag.chunking import chunk_text1,file_path_md,read_md,Metadata
 from typing import overload
 from dataclasses import asdict
 from dotenv import load_dotenv

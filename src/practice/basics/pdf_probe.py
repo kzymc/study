@@ -1,4 +1,5 @@
-from pypdf import PdfReader
+﻿from pypdf import PdfReader
+from pathlib import Path
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -11,7 +12,7 @@ with PdfReader(os.environ["FILE_PATH_PDF"]) as pdf:
     print(next(it))
     print(next(it).extract_text())
 
-with open('day02.md','r',encoding='utf-8') as f:
+with open(Path(__file__).resolve().parents[3]/'notes'/'day02.md','r',encoding='utf-8') as f:
     content=f.read()
     print(content)
 

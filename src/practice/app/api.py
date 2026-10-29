@@ -1,11 +1,11 @@
-from pydantic import BaseModel, Field
+﻿from pydantic import BaseModel, Field
 from fastapi import FastAPI
-from practice.day04 import search
-from practice.day05 import get_response,_get_stream_response
+from practice.rag.vectorstore import search
+from practice.rag.llm import get_response,_get_stream_response
 from typing import Iterable
 from fastapi.sse import EventSourceResponse
-from practice.day03 import Metadata
-from practice.day04 import collection
+from practice.rag.chunking import Metadata
+from practice.rag.vectorstore import collection
 
 class Citation(BaseModel):
     source_path:str = Field(description="引用的文件名")
