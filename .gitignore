@@ -19,4 +19,5 @@ data/docs/*.md
 chroma_db/
 chroma_db_test/
 data/chroma/
-
+# 其他临时文件
+NOTES.md
