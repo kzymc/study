@@ -4,14 +4,13 @@ from chromadb.api.models.Collection import Collection
 
 from openai import OpenAI
 from practice.rag.chunking import chunk_text1,file_path_md,read_md,Metadata
-from practice import REPO_ROOT
 from typing import overload
 from dataclasses import asdict
 from dotenv import load_dotenv
 from chromadb.api.types import Embeddings
 from typing import cast
 import logging 
-load_dotenv(REPO_ROOT / ".env")
+load_dotenv()
 import os
 
 client = OpenAI(
@@ -42,8 +41,7 @@ def get_embedding(query:str|list[str]):
     
     return vecs[0] if isinstance(query,str) else vecs
 #chromadb的初始化，和创建collection
-# 路径基于 REPO_ROOT 而不是 "./chroma_db"：否则换个目录启动就会静默新建一个空库
-_chroma =chromadb.PersistentClient(path=str(REPO_ROOT / "chroma_db"),
+_chroma =chromadb.PersistentClient(path="./chroma_db",
                                    settings=Settings(anonymized_telemetry=False))
 collection = _chroma.get_or_create_collection(name="my_kb",
                                        metadata={"hnsw:space": "cosine"})
@@ -111,4 +109,4 @@ if __name__ == '__main__':
     # file_path_md1= os.path.basename(file_path_md)
     # chunks=chunk_text1(read_md(file_path_md),file_path_md1)
     # addDocument(collection,chunks=chunks)
-    print(search(collection,"七天无理由退货的 7 天从什么时候开始算？"))
+    print(search(collection,"乌合之众讲了什么"))

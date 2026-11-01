@@ -2,8 +2,7 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-from practice import REPO_ROOT
-load_dotenv(REPO_ROOT / ".env")
+load_dotenv()
 with PdfReader(os.environ["FILE_PATH_PDF"]) as pdf:
     print("------------------迭代对象输出内容------------------")
     page=pdf.pages[1]

@@ -1,13 +1,12 @@
-﻿from openai import OpenAI, APIConnectionError,APITimeoutError,RateLimitError,InternalServerError
+from openai import OpenAI, APIConnectionError,APITimeoutError,RateLimitError,InternalServerError
 from tenacity import retry, stop_after_attempt, wait_fixed,before_sleep_log,retry_if_exception_type
 import logging
 
 import os
 from dotenv import load_dotenv
-from practice import REPO_ROOT
 from typing import Iterable
 
-load_dotenv(REPO_ROOT / ".env")
+load_dotenv()
 ExceptionType =(APITimeoutError,APIConnectionError,RateLimitError,InternalServerError)
 base_url = os.environ["OPENAI_BASE_URL"]
 api_key = os.environ["OPENAI_API_KEY"]

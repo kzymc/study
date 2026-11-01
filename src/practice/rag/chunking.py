@@ -1,11 +1,10 @@
-﻿from pypdf import PdfReader
+from pypdf import PdfReader
 import re
 from dataclasses import dataclass
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from practice import REPO_ROOT
-load_dotenv(REPO_ROOT / ".env")
+load_dotenv()
 file_path_pdf=os.environ["FILE_PATH_PDF"]
 file_path_md=os.environ["FILE_PATH_MD"]
 def read_pdf(file_path,page=1):
